@@ -1,9 +1,9 @@
 var happi = require("happi-dev-sdk");
 happi.init("1b2680PzWtH40vWogZoMu14YUuwc72fR99Ig0ufTbcZf6lL3eAau1AxV");
 const express = require("express");
-const router = express.Router();
+const cancionesRouter = express.Router();
 
-router.post("/canciones", async (req, res) => {
+cancionesRouter.get("/canciones", async (req, res) => {
   let cancion = req.body.cancion;
   let canciones = await happi.music
     .search(cancion, 40)
@@ -27,4 +27,5 @@ router.post("/canciones", async (req, res) => {
   res.send(cancionesFiltradas);
 });
 
-module.exports = router;
+
+module.exports = cancionesRouter;

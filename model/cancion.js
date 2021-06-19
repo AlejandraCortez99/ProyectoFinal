@@ -6,7 +6,9 @@ const esquemaTrack = new Schema(
     titulo: String,
     autor: String,
     album: String,
-    comentarios: Array,
+    letra: String,
+    rating: Function, //???
+    comentario: String,
   },
   {
       timestamps:{

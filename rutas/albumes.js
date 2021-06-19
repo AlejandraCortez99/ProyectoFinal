@@ -1,9 +1,9 @@
 var happi = require("happi-dev-sdk");
 happi.init("1b2680PzWtH40vWogZoMu14YUuwc72fR99Ig0ufTbcZf6lL3eAau1AxV");
 const express = require("express");
-const router = express.Router();
+const albumesRouter = express.Router();
 
-router.post("/albumes", async (req, res) => {
+albumesRouter.get("/albumes", async (req, res) => {
   let album = req.body.album;
   let albumes = await happi.music
     .search(album, 40)
@@ -27,4 +27,4 @@ router.post("/albumes", async (req, res) => {
   res.send(albumesFiltrados);
 });
 
-module.exports = router;
+module.exports = albumesRouter;
