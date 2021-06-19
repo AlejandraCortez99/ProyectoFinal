@@ -3,10 +3,10 @@ happi.init("1b2680PzWtH40vWogZoMu14YUuwc72fR99Ig0ufTbcZf6lL3eAau1AxV");
 const express = require("express");
 const router = express.Router();
 
-router.post("/canciones", async (req, res) => {
-  let cancion = req.body.cancion;
-  let canciones = await happi.music
-    .search(cancion, 40)
+router.post("/albumes", async (req, res) => {
+  let album = req.body.album;
+  let albumes = await happi.music
+    .search(album, 40)
     .then((response) => {
       return response;
     })
@@ -17,14 +17,14 @@ router.post("/canciones", async (req, res) => {
     .catch((error) => {
       console.log("Error", error);
     });
-  let cancionesFiltradas = [];
-  for (let i = 0; i < canciones.length; i++) {
-    console.log(canciones[i]);
-    if (canciones[i].track == cancion) {
-      cancionesFiltradas.push(canciones[i]);
+  let albumesFiltrados = [];
+  for (let i = 0; i < albumes.length; i++) {
+    console.log(albumes[i]);
+    if (albumes[i].album == album) {
+      albumesFiltrados.push(albumes[i]);
     }
   }
-  res.send(cancionesFiltradas);
+  res.send(albumesFiltrados);
 });
 
 module.exports = router;
