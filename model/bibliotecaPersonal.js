@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 const bibliotecaUsuario = new Schema(
   {
-    tituloCancion: String,
+    titulo: String,
     autor: String,
     album: String,
 },
@@ -14,5 +14,5 @@ const bibliotecaUsuario = new Schema(
     }
 );
 
-const ModeloBiblioteca = mongoose.model("BibliotecasPersonales", bibliotecaUsuario);
-module.exports = ModeloBiblioteca;
+const BibliotecasPersonales = mongoose.model("BibliotecasPersonales", bibliotecaUsuario);
+module.exports = BibliotecasPersonales;
