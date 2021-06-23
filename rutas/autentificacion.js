@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
 
-const User = require("../models/User");
+const Usuario = require("../model/usuario");
 
 const minPassLength = 8;
 
@@ -16,48 +16,49 @@ const expirationTime = 1800;
 const salt = bcrypt.genSaltSync(10);
 
 authRoutes.post("/signup", async (req, res) => {
-  const user = req.body.user;
-  const pass = req.body.pass;
+  const usuario = req.body.nombre;
+  const email = req.body.email
+  const contraseña = req.body.contraseña;
 
-  if (!user || !pass) {
+  if (!usuario || !email || !contraseña ) {
     res.send({
       auth: false,
       token: null,
-      message: `Provide username and password`,
+      message: `Establezca un nombre de usuario y contraseña`,
     });
     return;
   }
 
-  if (pass.length < minPassLength) {
+  if (contraseña.length < minPassLength) {
     res.send({
       auth: false,
       token: null,
-      message: `Please make your password at least 8 characters long for security purposes`,
+      message: `Por favor, para mayor seguridad, la contraseña debe contener mínimo 8 carácteres`,
     });
     return;
   }
 
-  let foundUser = await User.findOne({ username: user }).then(
+  let foundUsario = await Usuario.findOne({ nombre: usuario }).then(
     (repeatedUser) => {
       return repeatedUser;
     }
   );
 
-  if (foundUser != null) {
+  if (foundUsario != null) {
     res.send({
       auth: false,
       token: null,
-      message: `User name is already taken. Choose another one`,
+      message: `Nombre de Usuario ya existente. Pruebe con otro`,
     });
     return;
   }
 
   const hashPass = bcrypt.hashSync(pass, salt);
 
-  let newUser = await User.create({
-    username: user,
-    password: hashPass,
-    recipes: [],
+  let nuevoUsuario = await Usuario.create({
+    nombre: usuario,
+    constraseña: hashPass,
+    bibliotecaPersonal: [],
   })
     .then((createdUser) => {
       return createdUser;
@@ -66,12 +67,12 @@ authRoutes.post("/signup", async (req, res) => {
       res.send({
         auth: false,
         token: null,
-        message: `We have get the following error: ${error}`,
+        message: `Ha ocurrido el siguiente error: ${error}`,
       });
       return;
     });
 
-  const newToken = jwt.sign({ id: newUser._id }, process.env.SECRET_WORD, {
+  const newToken = jwt.sign({ id: nuevoUsuario._id }, process.env.SECRET_WORD, {
     expiresIn: expirationTime,
   });
 
@@ -79,60 +80,60 @@ authRoutes.post("/signup", async (req, res) => {
 });
 
 authRoutes.post("/login", async (req, res) => {
-  let name = req.body.user;
-  let pass = req.body.pass;
+  let nombre = req.body.nombre;
+  let contraseña = req.body.contraseña;
 
-  let user = await User.findOne({ username: name }).then((userFound) => {
+  let usuario = await Usuario.findOne({ nombre: nombre }).then((userFound) => {
     return userFound;
   });
 
-  if (!user) {
+  if (!usuario) {
     res.send({
       auth: false,
       token: null,
-      message: "User does not exist"
+      message: "El usuario proporcionado no existe"
     });
     return;
   }
 
-  let passwordIsValid = await bcrypt.compare(pass, user.password);
+  let contraseñaValida = await bcrypt.compare(contraseña, user.contraseña);
 
-  if (passwordIsValid == false) {
-    res.send({ auth: false, token: null, message: "Incorrect password" });
+  if (contraseñaValida == false) {
+    res.send({ auth: false, token: null, message: "Contraseña incorrecta" });
     return;
   }
 
-  const newToken = jwt.sign({ id: user._id }, process.env.SECRET_WORD, {
+  const newToken = jwt.sign({ id: usuario._id }, process.env.SECRET_WORD, {
     expiresIn: expirationTime,
   });
 
   res.send({ auth: true, token: newToken });
 });
 
-authRoutes.get("/private", async (req, res) => {
+authRoutes.get("/privaDO", async (req, res) => {
   const token = req.headers["x-access-token"];
 
   if (!token) {
     res.send({
       auth: false,
-      message: "There is no token provided",
+      message: "Token no proporcionado",
     });
     return;
   }
 
   const decoded = jwt.verify(token, process.env.SECRET_WORD)
 
-  const user = await User.findById(decoded.id, { password: 0 }).populate(
-    "recipes"
+  const usuario = await Usuario.findById(decoded.id, { contraseña: 0 }).populate(
+    "biblioteca personal"
   );
 
-  if (!user) {
+  if (!usuario) {
     res.send({
-      auth: false, message: "User does not exist" });
+      auth: false, message: "El usuario no existe" });
     return;
   }
 
-  res.send(user);
+  res.send(usuario);
 });
 
 

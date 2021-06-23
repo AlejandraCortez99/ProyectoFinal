@@ -4,7 +4,6 @@ const { Schema } = mongoose
 const esquemaUsuario = new Schema(
   {
     nombre: String,
-    email: String,
     contraseña: String,
     bibliotecaPersonal: Array,
   },

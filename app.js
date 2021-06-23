@@ -1,6 +1,8 @@
+
 const express = require("express");
 const app = express();
 const port = 2550;
+const Autentificacion = require("./rutas/autentificacion")
 const Usuarios = require("./rutas/usuarios");
 const Artistas = require("./rutas/artistas");
 const Albumes = require("./rutas/albumes");
@@ -10,6 +12,7 @@ require("./basedatos/bd");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("/", Autentificacion);
 app.use("/", Usuarios);
 app.use("/", Artistas);
 app.use("/", Canciones);

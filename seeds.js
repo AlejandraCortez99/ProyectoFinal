@@ -1,25 +1,53 @@
 const mongoose = require("mongoose");
 
+const bcrypt = require("bcrypt");
+
+const Usuario = require("./model/usuario");
+const BibliotecaPersonal = require("./model/bibliotecaPersonal");
+
 require("./basedatos/bd");
 
-let bibliotecasUsuarios = [
-    {
-        tituloCancion: "Uprising",
-        autor: "Muse",
-        album: "The Resistance",
-    },
-    {
-        tituloCancion: "Porch",
-        autor: "Pearl Jam",
-        album: "Ten",
-    },
-    {
-        tituloCancion: "Ize of the world",
-        autor: "The Strokes",
-        album: "First Impressions of Earth",
-    },
+const salt = bcrypt.genSaltSync(10);
+
+let bibliotecasPersonales = [
+  {
+    _id: "1234567890",
+    tituloCancion: "Uprising",
+    autor: "Muse",
+    album: "The Resistance",
+  },
+  {
+    _id: "1234567891",
+    tituloCancion: "Porch",
+    autor: "Pearl Jam",
+    album: "Ten",
+  },
+  {
+    _id: "1234567892",
+    tituloCancion: "Ize of the world",
+    autor: "The Strokes",
+    album: "First Impressions of Earth",
+  },
 ];
-let canciones = [
+let usuarios = [
+    {
+      nombre: "Manolo99",
+      contraseña: "aniversario123",
+      bibliotecaPersonal: [],
+    },
+    {
+      nombre: "MelomaniaSDK",
+      contraseña: "en.busca.del.mejor.album",
+      bibliotecaPersonal: [],
+    },
+    {
+      nombre: "reborn_18",
+      contraseña: "jmcid21",
+      bibliotecaPersonal: [],
+    },
+  ];
+
+/* let canciones = [
     {
         titulo: "Como la flor",
         autor: "Selena",
@@ -38,27 +66,8 @@ let canciones = [
         album: "Virtue",
         comentarios: Array,
     },
-];
-let Usuarios = [
-    {
-        nombre: "Manolo99",
-        email: "manoloujs@hotmail.com",
-        contraseña: "aniversario123",
-        bibliotecaPersonal: Array,
-    },
-    {
-        nombre: "MelomaniaSDK",
-        email: "sandradelibesK@gmail.com",
-        contraseña: "virtue.es.el.mejor.album",
-        bibliotecaPersonal: Array,
-    },
-    {
-        nombre: "reborn_18",
-        email: "jorge_major@hotmail.es",
-        contraseña: "jmcid21",
-        bibliotecaPersonal: Array,
-    },
-];
+]; */
+
 /* let Comentarios = [
     {
         usuario: "Manolo99",
@@ -77,3 +86,14 @@ let Usuarios = [
         Rating quizas(?): _
     }
 ] */
+usuarios.forEach((usuario) => {
+  let hashPass = bcrypt.hashSync(usuario.contraseña, salt);
+  usuario.contraseña = hashPass;
+});
+
+bibliotecasPersonales.forEach((bibliotecaPersonal) => {
+  let bibliotecaId = BibliotecaPersonal._id;
+  let max = usuarios.length - 1;
+  let userIndex = Math.floor(Math.random() * max);
+  usuarios[userIndex].bibliotecasPersonales.push(bibliotecaId);
+});
