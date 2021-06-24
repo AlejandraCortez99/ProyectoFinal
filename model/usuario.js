@@ -1,16 +1,14 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose
+const Schema = mongoose.Schema;
 
 const esquemaUsuario = new Schema(
   {
     nombre: String,
     contraseña: String,
-    bibliotecaPersonal: Array,
+    favoritos: [{ type: Schema.Types.ObjectId, ref: "Favoritos" }],
   },
   {  
-    timestamps: {
-      createdAt: "creado",
-    },
+    timestamps: true,
   }
 
 );
