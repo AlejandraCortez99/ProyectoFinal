@@ -4,8 +4,9 @@ const Schema = mongoose.Schema;
 const esquemaUsuario = new Schema(
   {
     nombre: String,
-    contraseña: String,
-    favoritos: [{ type: Schema.Types.ObjectId, ref: "Favoritos" }],
+    email: String,
+    password: String,
+    favoritos: [{ type: Schema.Types.ObjectId, ref: "Favorito" }],
   },
   {  
     timestamps: true,
@@ -13,5 +14,5 @@ const esquemaUsuario = new Schema(
 
 );
 
-const ModeloUsuario = mongoose.model("Usuarios", esquemaUsuario);
+const ModeloUsuario = mongoose.model("usuario", esquemaUsuario);
 module.exports = ModeloUsuario;

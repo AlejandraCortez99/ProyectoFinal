@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 mongoose
   .connect(
-    `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@aleluyalyrics.3qtha.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+    `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@aleluyalyrics.3qtha.mongodb.net/lyricsbd?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {

@@ -1,111 +1,73 @@
 const mongoose = require("mongoose");
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const Usuario = require("../model/usuario");
-const BibliotecaPersonal = require("../model/favoritosUsuario");
+const Favorito = require("../model/Favorito");
 
 require("../basedatos/bd");
 
 const salt = bcrypt.genSaltSync(10);
 
-let bibliotecasPersonales = [
+let favoritos = [
   {
-    tituloCancion: "Uprising",
+    _id: "60d6309ffe9db029b0d0a090",
+    titulo: "Uprising",
     autor: "Muse",
     album: "The Resistance",
   },
   {
-    tituloCancion: "Porch",
+    _id: "60d6309ffe9db029b0d0a091",
+    titulo: "Porch",
     autor: "Pearl Jam",
     album: "Ten",
   },
   {
-    tituloCancion: "Ize of the world",
+    _id: "60d6309ffe9db029b0d0a092",
+    titulo: "Ize of the world",
     autor: "The Strokes",
     album: "First Impressions of Earth",
   },
 ];
 let usuarios = [
-    {
-      nombre: "Manolo99",
-      contraseña: "aniversario123",
-      bibliotecaPersonal: [],
-    },
-    {
-      nombre: "MelomaniaSDK",
-      contraseña: "en.busca.del.mejor.album",
-      bibliotecaPersonal: [],
-    },
-    {
-      nombre: "reborn_18",
-      contraseña: "jmcid21",
-      bibliotecaPersonal: [],
-    },
-  ];
+  {
+    _id: "60d6309ffe9db029b0d0a099",
+    nombre: "Manolo99",
+    email: "manoloaguirre@hotmail.com",
+    password: "aniversario123",
+    favoritos: ["60d6309ffe9db029b0d0a090","60d6309ffe9db029b0d0a091","60d6309ffe9db029b0d0a092"],
+  },
+  {
+    _id: "60d6309ffe9db029b0d0a098",
+    nombre: "MelomaniaSDK",
+    email:"sradelkinto@hotmail.com",
+    password: "en.busca.del.mejor.album",
+    favoritos: [],
+  },
+  {
+    _id: "60d6309ffe9db029b0d0a097",
+    nombre: "reborn_18",
+    email: "jorgem@hotmail.es",
+    password: "jmcid21899",
+    favoritos: [],
+  },
+];
 
-/* let canciones = [
-    {
-        titulo: "Como la flor",
-        autor: "Selena",
-        album: "dreaming of you",
-        comentarios: Array,
-    },
-    {
-        titulo: "Evil",
-        autor: "Interpol",
-        album: "Antics",
-        comentarios: Array,
-    },
-    {
-        titulo: "Pink Ocean",
-        autor: "The Voidz",
-        album: "Virtue",
-        comentarios: Array,
-    },
-]; */
-
-/* let Comentarios = [
-    {
-        usuario: "Manolo99",
-        comentario: "Esta canción siempre me hace bailar!!:)",
-        Rating quizas(?): _
-
-    },
-    {
-        usuario: "MelomaniaSDK",
-        comentario: "Yo creo que el significado de esta canción va más allá de lo superficialidad que pueda evocar su letra...",
-        Rating quizas(?): _
-    },
-    {
-        usuario: "reborn_18",
-        comentario: "No entiendo xq a la gente le mola tanto esta cancion, a mi se me hace muy aburrida",
-        Rating quizas(?): _
-    }
-] */
 usuarios.forEach((usuario) => {
-  let hashPass = bcrypt.hashSync(usuario.contraseña, salt);
-  usuario.contraseña = hashPass;
+  let hashPass = bcrypt.hashSync(usuario.password, salt);
+  usuario.password = hashPass;
 });
 
-bibliotecasPersonales.forEach((bibliotecaPersonal) => {
-  let bibliotecaId = bibliotecaPersonal._id;
-  let max = usuarios.length - 1;
-  let userIndex = Math.floor(Math.random() * max);
-  usuarios[userIndex].bibliotecasPersonales.push(bibliotecaId);
-});
 
-BibliotecaPersonal.deleteMany()
+Favorito.deleteMany()
   .then(() => {
-    console.log(`Bibliotecas eliminadas`);
-    return BibliotecaPersonal.create(bibliotecasPersonales);
+    console.log(`Favoritos eliminadas`);
+    return Favorito.create(favoritos);
   })
-  .then((favoritos) => {
-    console.log(
-      `${bibliotecasCreadas.length} bibliotecas nuevas`
-    );
-    bibliotecasCreadas.forEach(() => {
-      console.log(bibliotecasCreadas.tituloCancion);
+  .then((favoritosCreados) => {
+    console.log(`${favoritosCreados.length} favoritos nuevos`);
+    favoritosCreados.forEach((favorito) => {
+      console.log(favorito.titulo);
     });
   })
   .then(() => {
