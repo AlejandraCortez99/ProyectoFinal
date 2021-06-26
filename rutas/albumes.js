@@ -2,8 +2,16 @@ var happi = require("happi-dev-sdk");
 happi.init("1b2680PzWtH40vWogZoMu14YUuwc72fR99Ig0ufTbcZf6lL3eAau1AxV");
 const express = require("express");
 const albumesRouter = express.Router();
+const tokenValidation = require("../functions/tokenValidation");
 
 albumesRouter.get("/albumes", async (req, res) => {
+  let myToken = req.headers.token;
+
+  let usuario = await tokenValidation(res, myToken);
+
+  if (!usuario) {
+    return;
+  }
   let album = req.body.album;
   let albumes = await happi.music
     .search(album, 40 | 100)
@@ -27,6 +35,13 @@ albumesRouter.get("/albumes", async (req, res) => {
   res.send(albumesFiltrados);
 });
 albumesRouter.get("/albumes/:id_artista", async (req, res) => {
+  let myToken = req.headers.token;
+
+  let usuario = await tokenValidation(res, myToken);
+
+  if (!usuario) {
+    return;
+  }
   console.log(req.params);
   let idArtista = req.params.id_artista;
   let albums = await happi.music
@@ -39,7 +54,14 @@ albumesRouter.get("/albumes/:id_artista", async (req, res) => {
     });
   res.send(albums.response.result);
 });
-albumesRouter.get("/albumes/:id_artista/:id_album/canciones-album", async (req, res) => {
+albumesRouter.get("/cancionesAlbum/:id_artista/:id_album", async (req, res) => {
+  let myToken = req.headers.token;
+
+  let usuario = await tokenValidation(res, myToken);
+
+  if (!usuario) {
+    return;
+  }
   console.log(req.params);
   let idArtista = req.params.id_artista;
   let idAlbum = req.params.id_album;

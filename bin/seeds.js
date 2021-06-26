@@ -12,6 +12,7 @@ const salt = bcrypt.genSaltSync(10);
 let favoritos = [
   {
     _id: "60d6309ffe9db029b0d0a090",
+    idApi:"",
     titulo: "Uprising",
     autor: "Muse",
     album: "The Resistance",
@@ -57,7 +58,6 @@ usuarios.forEach((usuario) => {
   let hashPass = bcrypt.hashSync(usuario.password, salt);
   usuario.password = hashPass;
 });
-
 
 Favorito.deleteMany()
   .then(() => {

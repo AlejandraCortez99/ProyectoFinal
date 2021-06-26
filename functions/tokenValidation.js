@@ -2,7 +2,6 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const Usuario = require("../model/usuario");
 
-
 let tokenValidation = async (response, token) => {
   let validationResult = {};
 

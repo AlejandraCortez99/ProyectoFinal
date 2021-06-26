@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 const Favorito = require("../model/Favorito");
 const Usuario = require("../model/usuario");
 
-const expirationTime = 1800;
+const expirationTime = 9800;
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -85,7 +85,7 @@ authRoutes.post("/signup", async (req, res) => {
   });
 });
 
-authRoutes.post("/login", async (req, res) => {
+authRoutes.get("/login", async (req, res) => {
   let emailUsuario = req.body.email;
   let passwordUsuario = req.body.password;
 

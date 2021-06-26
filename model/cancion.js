@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose
+const Schema = mongoose.Schema;
 
 const esquemaTrack = new Schema(
   {
@@ -7,7 +7,7 @@ const esquemaTrack = new Schema(
     autor: String,
     album: String,
     letra: String,
-    rating: Function, //???
+    rating: Function, 
     comentario: String,
   },
   {
