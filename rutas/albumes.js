@@ -4,36 +4,6 @@ const express = require("express");
 const albumesRouter = express.Router();
 const tokenValidation = require("../functions/tokenValidation");
 
-albumesRouter.get("/albumes", async (req, res) => {
-  let myToken = req.headers.token;
-
-  let usuario = await tokenValidation(res, myToken);
-
-  if (!usuario) {
-    return;
-  }
-  let album = req.body.album;
-  let albumes = await happi.music
-    .search(album, 40 | 100)
-    .then((response) => {
-      return response;
-    })
-    .then((info) => {
-      let data = info.response.result;
-      return data;
-    })
-    .catch((error) => {
-      console.log("Error", error);
-    });
-  let albumesFiltrados = [];
-  for (let i = 0; i < albumes.length; i++) {
-    console.log(albumes[i]);
-    if (albumes[i].album == album) {
-      albumesFiltrados.push(albumes[i]);
-    }
-  }
-  res.send(albumesFiltrados);
-});
 albumesRouter.get("/albumes/:id_artista", async (req, res) => {
   let myToken = req.headers.token;
 
