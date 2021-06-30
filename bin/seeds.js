@@ -12,16 +12,17 @@ const salt = bcrypt.genSaltSync(10);
 let favoritos = [
   {
     _id: "60d6309ffe9db029b0d0a090",
-    idApi:"",
+    idApi:"13069386",
     titulo: "Uprising",
-    autor: "Muse",
-    album: "The Resistance",
+    autor: "Jhonny Fernando",
+    album: "Tech House Planet",
   },
   {
     _id: "60d6309ffe9db029b0d0a091",
-    titulo: "Porch",
+    idApi:"120339",
+    titulo: "Even Flow",
     autor: "Pearl Jam",
-    album: "Ten",
+    album: "rearviewmirror (greatest hits 1991-2003)"
   },
   {
     _id: "60d6309ffe9db029b0d0a092",

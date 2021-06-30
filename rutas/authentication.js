@@ -10,10 +10,10 @@ const jwt = require("jsonwebtoken");
 
 const Favorito = require("../model/Favorito");
 const Cancion = require("../model/Cancion");
-const Comentario = require("../model/comentarios");
+const Comentario = require("../model/comentario");
 const Usuario = require("../model/usuario");
 
-const expirationTime = 20800;
+const expirationTime = 10800;
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -118,9 +118,8 @@ authRoutes.get("/login", async (req, res) => {
   res.send({ auth: true, token: nuevoToken });
 });
 
-authRoutes.get("/homeUsuario/:usuarioId", async (req, res) => {
+authRoutes.get("/homeUsuario", async (req, res) => {
   let myToken = req.headers.token;
-  let id = req.params.usuarioId;
   let usuario = await tokenValidation(res, myToken);
 
   if (!usuario) {
@@ -146,16 +145,15 @@ authRoutes.put("/editarPerfil/:usuarioId", async (req, res) => {
   const id = req.params.usuarioId;
   const nombreUsuario = req.body.nombre;
   const emailUsuario = req.body.email;
-  const passwordUsuario = req.body.password;
+  
   await Usuario.findByIdAndUpdate(id, {
     nombre: nombreUsuario,
     email: emailUsuario,
-    password: passwordUsuario,
   })
     .then(() => {})
     .catch((error) => {
       res.send(error);
     });
-  res.redirect(`/homeUsuario/${id}`);
+  res.redirect(`/homeUsuario`);
 });
 module.exports = authRoutes;
