@@ -1,21 +1,13 @@
-// const mongoose = require("mongoose");
-// const Schema = mongoose.Schema;
+//Este esquema es solo un medio para un fin
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-// const esquemaFavorita = new Schema(
-//   {
-//     titulo: String,
-//     autor: String,
-//     album: String,
-//     letra: String,
-//     rating: Function, //?
-//     comentario: String,//?
-//   },
-//   {
-//       timestamps:{
-//         realeaseDate: String, 
-//       }
-//   }
-// );
+const esquemaCancion = new Schema(
+  {
+    idApi: String,
+    comentarios: [{ type: Schema.Types.ObjectId, ref: "comentarios" }],
+  }
+);
 
-// const Favorita = mongoose.model("Favorita", esquemaFavorita);
-// module.exports = Favorita;
+const Cancion = mongoose.model("Cancion", esquemaCancion);
+module.exports = Cancion;

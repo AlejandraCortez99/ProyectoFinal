@@ -5,6 +5,7 @@ const Authentication = require("./rutas/authentication");
 const Artistas = require("./rutas/artistas");
 const Albumes = require("./rutas/albumes");
 const Canciones = require("./rutas/canciones");
+
 require("./basedatos/bd");
 
 app.use(express.json());
@@ -13,6 +14,8 @@ app.use("/", Authentication);
 app.use("/", Artistas);
 app.use("/", Canciones);
 app.use("/", Albumes);
+app.use("/", Canciones);
+
 
 
 app.listen(port, () => {

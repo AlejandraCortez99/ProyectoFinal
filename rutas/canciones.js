@@ -5,8 +5,11 @@ const cancionesRouter = express.Router();
 const tokenValidation = require("../functions/tokenValidation");
 const Usuario = require("../model/usuario");
 const Favorito = require("../model/Favorito");
+const Cancion = require("../model/Cancion");
+const Comentario = require("../model/comentario");
 
-cancionesRouter.get("/canciones", async (req, res) => {
+
+cancionesRouter.get("/buscarCancion", async (req, res) => {
   let myToken = req.headers.token;
 
   let usuario = await tokenValidation(res, myToken);
@@ -64,6 +67,14 @@ cancionesRouter.get(
     }
     console.log(favorito);
 
+    let cancionElegida = Cancion.filter((element)=>{
+      return element.idApi == idCancion;
+    });
+    let comentariosDejados = Cancion.comentarios; 
+    if(cancionElegida.length > 0 ) {
+      return comentariosDejados;
+    }
+    
     let cancion = await happi.music
       .lyrics(idArtista, idAlbum, idCancion)
       .then((response) => {
@@ -72,12 +83,11 @@ cancionesRouter.get(
       .catch((err) => {
         res.send(err);
       });
-    res.send({ cancion: cancion.response.result, favorito: esFavorito });
+    res.send({ cancion: cancion.response.result, favorito: esFavorito, comentarios: comentariosDejados });
   }
 );
 
 cancionesRouter.post(
-  //"/cancionFavorita/:titulo/:autor/:album/:id_artista/:id_album/:id_cancion",
   "/cancionFavorita/:id_artista/:id_album/:id_cancion",
   async (req, res) => {
     let myToken = req.headers.token;
@@ -114,10 +124,59 @@ cancionesRouter.post(
     await Usuario.findByIdAndUpdate(usuario._id, {
       $push: { favoritos: nuevoFavorito._id },
     });
-    res.redirect(`/cancion/${idArtista}/${idAlbum}/${idCancion}`);
-  }
-);
-// cancionesRouter.post("/cancionFavorita/:id_cancion"
-// });
+     res.redirect(`/cancion/${idArtista}/${idAlbum}/${idCancion}`);
+    });
+    
+cancionesRouter.delete(
+  "/borrarCancionFavorita/:id_cancion",
+  async (req, res) => {
+    let myToken = req.headers.token;
 
+    let usuario = await tokenValidation(res, myToken);
+
+    if (!usuario) {
+      return;
+    }
+    let idCancionGuardada = req.params._id;
+    let favoritoBorrado = await Favorito.findByIdAndDelete(idCancionGuardada, {
+      $pull: { favoritos: favoritoBorrado._id },
+    });
+    res.redirect(`/cancion/${idArtista}/${idAlbum}/${idCancion}`);
+  });
+
+cancionesRouter.post(
+    "/publicarComentario/:id_artista/:id_album/:id_cancion", //COMENTARIOS SOBRE LA CANCION/LETRA CONCRETA
+    async (req, res) => {
+      let myToken = req.headers.token;
+  
+      let usuario = await tokenValidation(res, myToken);
+  
+      if (!usuario) {
+        return;
+      }
+      let idArtista = req.params.id_artista;
+      let idAlbum = req.params.id_album;
+      let idCancion = req.params.id_cancion;
+      let cancion = await happi.music
+        .lyrics(idArtista, idAlbum, idCancion)
+        .then((response) => {
+          return response;
+        })
+        .catch((err) => {
+          res.send(err);
+        });
+      let Texto = req.body.texto;
+      let idTrack = cancion.response.result.id_track;
+      let nuevoComentario = await Comentario.create({
+        usuario: usuario,
+        texto: Texto,
+      }).then((comentario) => {
+        return comentario;
+      });
+  
+      await Cancion.findByIdAndUpdate(Cancion._id, {
+        $push: { idApi: idTrack, comentarios: nuevoComentario._id},
+      });
+       res.redirect(`/cancion/${idArtista}/${idAlbum}/${idCancion}`);
+      });
 module.exports = cancionesRouter;

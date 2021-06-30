@@ -9,9 +9,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const Favorito = require("../model/Favorito");
+const Cancion = require("../model/Cancion");
+const Comentario = require("../model/comentarios");
 const Usuario = require("../model/usuario");
 
-const expirationTime = 9800;
+const expirationTime = 20800;
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -116,9 +118,9 @@ authRoutes.get("/login", async (req, res) => {
   res.send({ auth: true, token: nuevoToken });
 });
 
-authRoutes.get("/usuario", async (req, res) => {
+authRoutes.get("/homeUsuario/:usuarioId", async (req, res) => {
   let myToken = req.headers.token;
-
+  let id = req.params.usuarioId;
   let usuario = await tokenValidation(res, myToken);
 
   if (!usuario) {
@@ -128,17 +130,17 @@ authRoutes.get("/usuario", async (req, res) => {
   res.send(usuario);
 });
 
-authRoutes.get("/usuario/:usuarioId", async (req, res) => {
-  let id = req.params.usuarioId;
-  let usuario = await Usuario.findById(id)
-    .then((foundUser) => {
-      return foundUser;
-    })
-    .catch((error) => {
-      res.send(error);
-    });
-  res.send(usuario);
-});
+// authRoutes.get("/usuario/:usuarioId", async (req, res) => {
+//   let id = req.params.usuarioId;
+//   let usuario = await Usuario.findById(id)
+//     .then((foundUser) => {
+//       return foundUser;
+//     })
+//     .catch((error) => {
+//       res.send(error);
+//     });
+//   res.send(usuario);
+// });
 
 authRoutes.put("/editarPerfil/:usuarioId", async (req, res) => {
   const id = req.params.usuarioId;
@@ -154,6 +156,6 @@ authRoutes.put("/editarPerfil/:usuarioId", async (req, res) => {
     .catch((error) => {
       res.send(error);
     });
-  res.redirect(`/usuario/${id}`);
+  res.redirect(`/homeUsuario/${id}`);
 });
 module.exports = authRoutes;
