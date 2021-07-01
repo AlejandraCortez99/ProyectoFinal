@@ -12,10 +12,10 @@ const salt = bcrypt.genSaltSync(10);
 let favoritos = [
   {
     _id: "60d6309ffe9db029b0d0a090",
-    idApi:"13069386",
-    titulo: "Uprising",
-    autor: "Jhonny Fernando",
-    album: "Tech House Planet",
+    idApi:"6752573",
+    titulo: "Como La Flor",
+    autor: "Selena",
+    album: "All My Hits: Todos Mis Exitos",
   },
   {
     _id: "60d6309ffe9db029b0d0a091",
@@ -26,9 +26,10 @@ let favoritos = [
   },
   {
     _id: "60d6309ffe9db029b0d0a092",
-    titulo: "Ize of the world",
+    idApi:"158558",
+    titulo: "Reptilia",
     autor: "The Strokes",
-    album: "First Impressions of Earth",
+    album: "Room On Fire",
   },
 ];
 let usuarios = [

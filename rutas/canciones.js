@@ -8,7 +8,7 @@ const Usuario = require("../model/usuario");
 const Favorito = require("../model/Favorito");
 const CancionComentada = require("../model/Cancion");
 const Comentario = require("../model/comentario");
-const Cancion = require("../model/Cancion");
+
 
 cancionesRouter.get("/buscarCancion", async (req, res) => {
   let myToken = req.headers.token;
@@ -61,7 +61,8 @@ cancionesRouter.get(
     let idArtista = req.params.id_artista;
     let idAlbum = req.params.id_album;
     console.log(idCancion, idArtista, idAlbum);
-    //Mostrar si la cancion está gusrada como favorita o no
+
+    //Mostramos si la cancion está guardada como favorita o no
     let favorito = usuario.favoritos.filter((element) => {
       return element.idApi == idCancion;
     });
@@ -70,17 +71,16 @@ cancionesRouter.get(
       esFavorito = true;
     }
     console.log(favorito);
-
-    //Mostrar los comentarios que haya en esa cancion
-    // let cancionSeleccionada = CancionComentada.filter((element) => {
-    //   return element.idApi == idCancion;
-    // });
-
-    // let comentariosDejados = cancionSeleccionada.comentarios;
-    // if(cancionComentada.length > 0 ) {
-    //   return comentariosDejados;
+    //Mostramos los comentarios que haya en esa cancion
+    // let cancionSeleccionada = await CancionComentada.findOne({ idApi: idCancion})
+    // .then((element) => {
+    //   return element;
+    // })
+    // let hayComentarios = false;
+    // if(cancionSeleccionada.length > 0 ) {
+    //   hayComentarios = true;
     // }
-    // console.log("EN TEORIA LOS COMENTARIOS SE MOSTRARIAN")
+    //console.log("En teoría los comentarios se mostrarían")
 
     let cancion = await happi.music
       .lyrics(idArtista, idAlbum, idCancion)
@@ -94,13 +94,14 @@ cancionesRouter.get(
     res.send({
       cancion: cancion.response.result,
       favorito: esFavorito //,
-      //comentarios: comentariosDejados,
+      // comentarios: hayComentarios,
     });
   }
 );
 
+ // Pinchar en el boton correspondiente, que nos guardará la cancion como Fav
 cancionesRouter.post(
-  "/cancionFavorita/:id_artista/:id_album/:id_cancion",
+  "/guardarFavorito/:id_artista/:id_album/:id_cancion",
   async (req, res) => {
     let myToken = req.headers.token;
 
@@ -140,8 +141,9 @@ cancionesRouter.post(
   }
 );
 
+//Pinchar de nuevo en el boton anterior, quitarÁ la cancion de Favoritos
 cancionesRouter.delete(
-  "/borrarCancionFavorita/:id_artista/:id_album/:id_cancion",
+  "/borrarFavorito/:id_artista/:id_album/:id_cancion",
   async (req, res) => {
     let myToken = req.headers.token;
 
@@ -174,7 +176,7 @@ cancionesRouter.delete(
 );
 
 // cancionesRouter.post(
-//   "/publicarComentario/:id_artista/:id_album/:id_cancion", //COMENTARIOS SOBRE LA CANCION/LETRA CONCRETA
+//   "/nuevoComentario/:id_artista/:id_album/:id_cancion", //COMENTARIOS SOBRE LA CANCION/LETRA CONCRETA
 //   async (req, res) => {
 //     let myToken = req.headers.token;
 
@@ -194,8 +196,9 @@ cancionesRouter.delete(
 //       .catch((err) => {
 //         res.send(err);
 //       });
-//     let Texto = req.body.texto;
+
 //     let idTrack = cancion.response.result.id_track;
+//     let Texto = req.body.texto;
 //     let nuevoComentario = await Comentario.create({
 //       usuario: usuario.nombre,
 //       texto: Texto,
@@ -203,7 +206,7 @@ cancionesRouter.delete(
 //       return comentario;
 //     });
 
-//     await Cancion.findByIdAndUpdate(Cancion._id, {
+//     await Cancion.findByIdAndUpdate(Cancion.Comentada_id, { //Esto no tiene sentido lol, es un modelo, no tiene id
 //       $push: { idApi: idTrack, comentarios: nuevoComentario._id },
 //     });
 //     res.redirect(`/cancion/${idArtista}/${idAlbum}/${idCancion}`);

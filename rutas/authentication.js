@@ -146,7 +146,8 @@ authRoutes.put("/editarPerfil/:usuarioId", async (req, res) => {
   const nombreUsuario = req.body.nombre;
   const emailUsuario = req.body.email;
   
-  await Usuario.findByIdAndUpdate(id, {
+  await Usuario
+  .findByIdAndUpdate(id, {
     nombre: nombreUsuario,
     email: emailUsuario,
   })
