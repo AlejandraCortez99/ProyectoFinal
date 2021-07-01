@@ -6,8 +6,8 @@ const cancionesRouter = express.Router();
 const tokenValidation = require("../functions/tokenValidation");
 const Usuario = require("../model/usuario");
 const Favorito = require("../model/Favorito");
-const CancionComentada = require("../model/Cancion");
-const Comentario = require("../model/comentario");
+// const CancionComentada = require("../model/Cancion");
+// const Comentario = require("../model/comentario");
 
 
 cancionesRouter.get("/buscarCancion", async (req, res) => {
@@ -20,7 +20,7 @@ cancionesRouter.get("/buscarCancion", async (req, res) => {
   }
   let cancion = req.body.cancion;
   let canciones = await happi.music
-    .search(cancion, 40 | 200)
+    .search(cancion, 40 | 100)
     .then((response) => {
       return response;
     })
@@ -62,7 +62,7 @@ cancionesRouter.get(
     let idAlbum = req.params.id_album;
     console.log(idCancion, idArtista, idAlbum);
 
-    //Mostramos si la cancion está guardada como favorita o no
+//Mostramos si la cancion está guardada como favorita o no
     let favorito = usuario.favoritos.filter((element) => {
       return element.idApi == idCancion;
     });
@@ -99,7 +99,7 @@ cancionesRouter.get(
   }
 );
 
- // Pinchar en el boton correspondiente, que nos guardará la cancion como Fav
+// Pinchar en el boton correspondiente, que nos guardará la cancion como Fav
 cancionesRouter.post(
   "/guardarFavorito/:id_artista/:id_album/:id_cancion",
   async (req, res) => {
@@ -141,7 +141,7 @@ cancionesRouter.post(
   }
 );
 
-//Pinchar de nuevo en el boton anterior, quitarÁ la cancion de Favoritos
+//Pinchar de nuevo en el boton anterior, quitará la cancion de Favoritos
 cancionesRouter.delete(
   "/borrarFavorito/:id_artista/:id_album/:id_cancion",
   async (req, res) => {
@@ -174,7 +174,6 @@ cancionesRouter.delete(
     res.redirect(`/cancion/${idArtista}/${idAlbum}/${idCancion}`);
   }
 );
-
 // cancionesRouter.post(
 //   "/nuevoComentario/:id_artista/:id_album/:id_cancion", //COMENTARIOS SOBRE LA CANCION/LETRA CONCRETA
 //   async (req, res) => {

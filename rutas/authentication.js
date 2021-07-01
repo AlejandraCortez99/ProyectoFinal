@@ -145,11 +145,13 @@ authRoutes.put("/editarPerfil/:usuarioId", async (req, res) => {
   const id = req.params.usuarioId;
   const nombreUsuario = req.body.nombre;
   const emailUsuario = req.body.email;
-  
+  const passwordUsuario = req.body.password;
+  const hashPass = bcrypt.hashSync(passwordUsuario, salt);
   await Usuario
   .findByIdAndUpdate(id, {
     nombre: nombreUsuario,
     email: emailUsuario,
+    password: hashPass,
   })
     .then(() => {})
     .catch((error) => {
