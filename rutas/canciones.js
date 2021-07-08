@@ -5,9 +5,16 @@ const express = require("express");
 const cancionesRouter = express.Router();
 const tokenValidation = require("../functions/tokenValidation");
 const Usuario = require("../model/usuario");
-const Favorito = require("../model/Favorito");
-// const CancionComentada = require("../model/Cancion");
+const Favorito = require("../model/favorito");
+// const CancionComentada = require("../model/cancion");
 // const Comentario = require("../model/comentario");
+
+
+
+cancionesRouter.get("/", (req,res) => {
+  res.send({ message: "comprobamos que funciona la ruta raiz" });
+});
+
 
 
 cancionesRouter.get("/buscarCancion", async (req, res) => {

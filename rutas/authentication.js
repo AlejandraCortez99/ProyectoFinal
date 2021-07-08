@@ -8,10 +8,10 @@ const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 
-const Favorito = require("../model/Favorito");
-const Cancion = require("../model/Cancion");
-const Comentario = require("../model/comentario");
+const Favorito = require("../model/favorito");
 const Usuario = require("../model/usuario");
+// const Cancion = require("../model/cancion");
+// const Comentario = require("../model/comentario");
 
 const expirationTime = 10800;
 
@@ -21,7 +21,7 @@ authRoutes.post("/signup", async (req, res) => {
   const usuario = req.body.nombre;
   const email = req.body.email;
   const password = req.body.password;
-
+  console.log(usuario,email,password);
   if (!usuario || !password || !email) {
     res.send({
       auth: false,
@@ -87,7 +87,7 @@ authRoutes.post("/signup", async (req, res) => {
   });
 });
 
-authRoutes.get("/login", async (req, res) => {
+authRoutes.post("/login", async (req, res) => {
   let emailUsuario = req.body.email;
   let passwordUsuario = req.body.password;
 
@@ -129,24 +129,14 @@ authRoutes.get("/homeUsuario", async (req, res) => {
   res.send(usuario);
 });
 
-// authRoutes.get("/usuario/:usuarioId", async (req, res) => {
-//   let id = req.params.usuarioId;
-//   let usuario = await Usuario.findById(id)
-//     .then((foundUser) => {
-//       return foundUser;
-//     })
-//     .catch((error) => {
-//       res.send(error);
-//     });
-//   res.send(usuario);
-// });
-
 authRoutes.put("/editarPerfil/:usuarioId", async (req, res) => {
   const id = req.params.usuarioId;
   const nombreUsuario = req.body.nombre;
   const emailUsuario = req.body.email;
   const passwordUsuario = req.body.password;
+
   const hashPass = bcrypt.hashSync(passwordUsuario, salt);
+
   await Usuario
   .findByIdAndUpdate(id, {
     nombre: nombreUsuario,

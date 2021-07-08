@@ -1,3 +1,4 @@
+const cors = require("cors");
 const express = require("express");
 const app = express();
 const port = 2550;
@@ -8,6 +9,7 @@ const Canciones = require("./rutas/canciones");
 
 require("./basedatos/bd");
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/", Authentication);
