@@ -4,7 +4,7 @@ const express = require("express");
 const artistasRouter = express.Router();
 const tokenValidation = require("../functions/tokenValidation");
 
-artistasRouter.get("/buscarArtista", async (req, res) => {
+artistasRouter.post("/buscarArtista", async (req, res) => {
   let myToken = req.headers.token;
 
   let usuario = await tokenValidation(res, myToken);

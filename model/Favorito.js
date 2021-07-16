@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const favoritoSchema = new Schema(
   {
     idApi: String,
+    idAlbum: String,
     titulo: String,
     autor: String,
     album: String,

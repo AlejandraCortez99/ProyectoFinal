@@ -17,7 +17,8 @@ cancionesRouter.get("/", (req,res) => {
 
 
 
-cancionesRouter.get("/buscarCancion", async (req, res) => {
+cancionesRouter.post("/buscarCancion", async (req, res) => {
+  console.log(req.body.cancion);
   let myToken = req.headers.token;
 
   let usuario = await tokenValidation(res, myToken);
@@ -132,8 +133,10 @@ cancionesRouter.post(
     let autor = cancion.response.result.artist;
     let album = cancion.response.result.album;
     let idTrack = cancion.response.result.id_track;
+    let idAlbumCover = cancion.response.result.id_album;
     let nuevoFavorito = await Favorito.create({
       idApi: idTrack,
+      idAlbum:idAlbumCover,
       titulo: titulo,
       autor: autor,
       album: album,
