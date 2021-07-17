@@ -12,24 +12,27 @@ const salt = bcrypt.genSaltSync(10);
 let favoritos = [
   {
     _id: "60d6309ffe9db029b0d0a090",
-    idApi:"6752573",
-    idAlbum:"447891",
+    id_track:"6752573",
+    id_artist:"3370",
+    id_album:"447891",
     titulo: "Como La Flor",
     autor: "Selena",
     album: "All My Hits: Todos Mis Exitos",
   },
   {
     _id: "60d6309ffe9db029b0d0a091",
-    idApi:"120339",
-    idAlbum:"7171",
+    id_track:"120339",
+    id_artist:"5782",
+    id_album:"7171",
     titulo: "Even Flow",
     autor: "Pearl Jam",
     album: "rearviewmirror (greatest hits 1991-2003)"
   },
   {
     _id: "60d6309ffe9db029b0d0a092",
-    idApi:"158558",
-    idAlbum:"9518",
+    id_track:"158558",
+    id_artist:"1307",
+    id_album:"9518",
     titulo: "Reptilia",
     autor: "The Strokes",
     album: "Room On Fire",

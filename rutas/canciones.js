@@ -133,10 +133,12 @@ cancionesRouter.post(
     let autor = cancion.response.result.artist;
     let album = cancion.response.result.album;
     let idTrack = cancion.response.result.id_track;
+    let idAutor = cancion.response.result.id_artist;
     let idAlbumCover = cancion.response.result.id_album;
     let nuevoFavorito = await Favorito.create({
-      idApi: idTrack,
-      idAlbum:idAlbumCover,
+      id_track: idTrack,
+      id_artist:idAutor,
+      id_album:idAlbumCover,
       titulo: titulo,
       autor: autor,
       album: album,
