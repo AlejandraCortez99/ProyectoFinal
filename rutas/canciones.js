@@ -72,7 +72,7 @@ cancionesRouter.get(
 
 //Mostramos si la cancion está guardada como favorita o no
     let favorito = usuario.favoritos.filter((element) => {
-      return element.idApi == idCancion;
+      return element.id_track == idCancion;
     });
     let esFavorito = false;
     if (favorito.length > 0) {
