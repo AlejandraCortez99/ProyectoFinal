@@ -32,9 +32,35 @@ artistasRouter.post("/buscarArtista", async (req, res) => {
         artistasFiltrados.push(artistas[i]);
       }
     }
+    console.log(artistasFiltrados);
+    let artistasUnicos = [];
+    for (let i = 0; i < artistasFiltrados.length; i++) {
+      if (artistasUnicos.length == 0) {
+        artistasUnicos.push(artistasFiltrados[i]);
+      } else {
+        let esDiferente = true;
+        for (let j = 0; j < artistasUnicos.length; j++) {
+          if(artistasUnicos[j].id_artist == artistasFiltrados[i].id_artist){
+            esDiferente = false;
+          }
+        }
+        if(esDiferente == true){
+          artistasUnicos.push(artistasFiltrados[i]);
+        }
+      }
+    }
+    // let names = artistasFiltrados.map(function (person) {
+    //   return person;
+    // });
+    // var sorted = names.sort();
+    // console.log(sorted);
+    // var unique = sorted.filter(function (value, index) {
+    //   return value !== sorted[index + 1];
+    // });
+    // console.log(unique);
 
-    res.send(artistasFiltrados);
-  } else{
+    res.send(artistasUnicos);
+  } else {
     res.send({
       message: `No se han encontrado resultados para la busqueda: ${artista}`,
     });
@@ -51,8 +77,7 @@ artistasRouter.get("/artista/:id_artista", async (req, res) => {
   }
   console.log(req.params);
   let idArtista = req.params.id_artista;
-  res.redirect(`/albumes/${idArtista}`)
+  res.redirect(`/albumes/${idArtista}`);
 });
-
 
 module.exports = artistasRouter;
