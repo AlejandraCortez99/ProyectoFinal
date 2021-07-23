@@ -22,7 +22,7 @@ albumesRouter.get("/albumes/:id_artista", async (req, res) => {
     .catch((err) => {
       res.send(err);
     });
-  res.send(albums.response.result);
+  res.send({albums: albums.response.result});
 });
 albumesRouter.get("/cancionesAlbum/:id_artista/:id_album", async (req, res) => {
   let myToken = req.headers.token;

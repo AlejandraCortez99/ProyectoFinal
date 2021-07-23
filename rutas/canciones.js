@@ -26,6 +26,7 @@ cancionesRouter.post("/buscarCancion", async (req, res) => {
   if (!usuario) {
     return;
   }
+  
   let cancion = req.body.cancion;
   let canciones = await happi.music
     .search(cancion, 40 | 100)
@@ -40,6 +41,7 @@ cancionesRouter.post("/buscarCancion", async (req, res) => {
       console.log("Error", error);
     });
    console.log(canciones);
+
   if (canciones.length > 0) {
     let cancionesFiltradas = [];
     for (let i = 0; i < canciones.length; i++) {

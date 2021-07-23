@@ -14,7 +14,7 @@ artistasRouter.post("/buscarArtista", async (req, res) => {
   }
   let artista = req.body.artista;
   let artistas = await happi.music
-    .search(artista, 40)
+    .search(artista, 40 | 100)
     .then((response) => {
       return response;
     })
