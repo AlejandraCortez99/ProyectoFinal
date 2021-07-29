@@ -9,16 +9,11 @@ const Favorito = require("../model/favorito");
 // const CancionComentada = require("../model/cancion");
 // const Comentario = require("../model/comentario");
 
-
-
-cancionesRouter.get("/", (req,res) => {
+cancionesRouter.get("/", (req, res) => {
   res.send({ message: "comprobamos que funciona la ruta raiz" });
 });
 
-
-
 cancionesRouter.post("/buscarCancion", async (req, res) => {
-  console.log(req.body.cancion);
   let myToken = req.headers.token;
 
   let usuario = await tokenValidation(res, myToken);
@@ -26,10 +21,9 @@ cancionesRouter.post("/buscarCancion", async (req, res) => {
   if (!usuario) {
     return;
   }
-  
   let cancion = req.body.cancion;
   let canciones = await happi.music
-    .search(cancion, 40 | 100)
+    .search(cancion, 50)
     .then((response) => {
       return response;
     })
@@ -40,7 +34,6 @@ cancionesRouter.post("/buscarCancion", async (req, res) => {
     .catch((error) => {
       console.log("Error", error);
     });
-   console.log(canciones);
 
   if (canciones.length > 0) {
     let cancionesFiltradas = [];
@@ -70,9 +63,8 @@ cancionesRouter.get(
     let idCancion = req.params.id_cancion;
     let idArtista = req.params.id_artista;
     let idAlbum = req.params.id_album;
-    console.log(idCancion, idArtista, idAlbum);
 
-//Mostramos si la cancion está guardada como favorita o no
+    //Mostramos si la cancion está guardada como favorita o no
     let favorito = usuario.favoritos.filter((element) => {
       return element.id_track == idCancion;
     });
@@ -80,7 +72,6 @@ cancionesRouter.get(
     if (favorito.length > 0) {
       esFavorito = true;
     }
-    console.log(favorito);
     //Mostramos los comentarios que haya en esa cancion
     // let cancionSeleccionada = await CancionComentada.findOne({ idApi: idCancion})
     // .then((element) => {
@@ -95,7 +86,6 @@ cancionesRouter.get(
     let cancion = await happi.music
       .lyrics(idArtista, idAlbum, idCancion)
       .then((response) => {
-        console.log(response)
         return response;
       })
       .catch((err) => {
@@ -103,7 +93,7 @@ cancionesRouter.get(
       });
     res.send({
       cancion: cancion.response.result,
-      favorito: esFavorito //,
+      favorito: esFavorito, //,
       // comentarios: hayComentarios,
     });
   }
@@ -139,8 +129,8 @@ cancionesRouter.post(
     let idAlbumCover = cancion.response.result.id_album;
     let nuevoFavorito = await Favorito.create({
       id_track: idTrack,
-      id_artist:idAutor,
-      id_album:idAlbumCover,
+      id_artist: idAutor,
+      id_album: idAlbumCover,
       titulo: titulo,
       autor: autor,
       album: album,
@@ -169,23 +159,19 @@ cancionesRouter.delete(
     let idArtista = req.params.id_artista;
     let idAlbum = req.params.id_album;
     let idCancion = req.params.id_cancion;
-    
-    let favorito = await Favorito.findOne({ idApi: idCancion})
+
+    let favorito = await Favorito.findOne({ id_track: idCancion })
     .then((cancion) => {
       return cancion;
-    })
+    });
     let id = favorito._id;
     console.log(id);
-    let favoritoBorrado = await Favorito.findByIdAndDelete(id)
-    .then((element)=>{
-      return element;
-    });
-  
+    await Favorito.findByIdAndDelete(id)
+    .then((element) => {});
     await Usuario.findByIdAndUpdate(usuario._id, {
-      $pull: { favoritos: favoritoBorrado._id },
+      $pull: { favoritos: id },
     });
-    // 
-    res.redirect(`/cancion/${idArtista}/${idAlbum}/${idCancion}`);
+    res.send({ favorito: false });
   }
 );
 // cancionesRouter.post(

@@ -14,7 +14,7 @@ artistasRouter.post("/buscarArtista", async (req, res) => {
   }
   let artista = req.body.artista;
   let artistas = await happi.music
-    .search(artista, 40 | 100)
+    .search(artista, 80)
     .then((response) => {
       return response;
     })
@@ -28,7 +28,7 @@ artistasRouter.post("/buscarArtista", async (req, res) => {
   if (artistas.length > 0) {
     let artistasFiltrados = [];
     for (let i = 0; i < artistas.length; i++) {
-      if (artistas[i].artist == artista) {
+      if (artistas[i].artist = artista) {
         artistasFiltrados.push(artistas[i]);
       }
     }

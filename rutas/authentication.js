@@ -62,7 +62,7 @@ authRoutes.post("/signup", async (req, res) => {
     nombre: usuario,
     email: email,
     password: hashPass,
-    bibliotecaPersonal: [],
+    favoritos: [],
   })
     .then((createdUser) => {
       return createdUser;
