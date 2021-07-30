@@ -79,7 +79,6 @@ authRoutes.post("/signup", async (req, res) => {
   const newToken = jwt.sign({ id: nuevoUsuario._id }, process.env.SECRET_WORD, {
     expiresIn: expirationTime,
   });
-
   res.send({
     auth: true,
     token: newToken,
@@ -98,9 +97,11 @@ authRoutes.post("/login", async (req, res) => {
   );
   if (!usuario) {
     res.send({
+      email: false,
+      paassword:false,
       auth: false,
       token: null,
-      message: `El usuario no existe`,
+      message: "El usuario no existe",
     });
     return;
   }
@@ -115,7 +116,7 @@ authRoutes.post("/login", async (req, res) => {
     expiresIn: expirationTime,
   });
 
-  res.send({ auth: true, token: nuevoToken });
+  res.send({ email: true, password: true, auth: true, token: nuevoToken });
 });
 
 authRoutes.get("/homeUsuario", async (req, res) => {
@@ -125,8 +126,7 @@ authRoutes.get("/homeUsuario", async (req, res) => {
   if (!usuario) {
     return;
   }
-
-  res.send(usuario);
+  res.send({ usuario: usuario, auth: true });
 });
 
 authRoutes.put("/editarPerfil/:usuarioId", async (req, res) => {
