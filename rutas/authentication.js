@@ -22,20 +22,19 @@ authRoutes.post("/signup", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   console.log(usuario,email,password);
-  if (!usuario || !password || !email) {
+  if (usuario === "" || password === "" || email === "") {
     res.send({
       auth: false,
       token: null,
-      message: `Establezca un nombre de usuario y contraseña`,
+      message: "Establezca un nombre de usuario y contraseña",
     });
     return;
   }
-
   if (password.length < 8) {
     res.send({
       auth: false,
       token: null,
-      message: `Por favor, para mayor seguridad, la contraseña debe contener mínimo 8 caracteres`,
+      message: "Por favor, para mayor seguridad, la contraseña debe contener mínimo 8 caracteres",
     });
     return;
   }
@@ -51,7 +50,7 @@ authRoutes.post("/signup", async (req, res) => {
     res.send({
       auth: false,
       token: null,
-      message: `Nombre de Usuario ya existente. Pruebe a utilizar otro`,
+      message: "Usuario ya existente. Pruebe a utilizar otro",
     });
     return;
   }
@@ -89,26 +88,34 @@ authRoutes.post("/signup", async (req, res) => {
 authRoutes.post("/login", async (req, res) => {
   let emailUsuario = req.body.email;
   let passwordUsuario = req.body.password;
-
+  if (emailUsuario === "" || passwordUsuario ==="") {
+    res.send({
+      auth: false,
+      token: null,
+      message: "Introduzca un email y/o contraseña",
+    });
+    return;
+  }
   let usuario = await Usuario.findOne({ email: emailUsuario }).then(
     (usuarioRegistrado) => {
       return usuarioRegistrado;
-    }
-  );
+    });
   if (!usuario) {
     res.send({
-      email: false,
-      paassword:false,
       auth: false,
       token: null,
-      message: "El usuario no existe",
+      message: "*El email proporcionado no existe*",
     });
     return;
   }
   let passwordValida = await bcrypt.compare(passwordUsuario, usuario.password);
 
-  if (passwordValida == false) {
-    res.send({ auth: false, token: null, message: "Contraseña incorrecta" });
+  if (passwordValida === false) {
+    res.send({
+      auth: false,
+      token: null,
+      message: "*Contraseña incorrecta*",
+    });
     return;
   }
 
@@ -116,7 +123,7 @@ authRoutes.post("/login", async (req, res) => {
     expiresIn: expirationTime,
   });
 
-  res.send({ email: true, password: true, auth: true, token: nuevoToken });
+  res.send({ auth: true, token: nuevoToken });
 });
 
 authRoutes.get("/homeUsuario", async (req, res) => {
