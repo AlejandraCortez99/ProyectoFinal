@@ -20,6 +20,6 @@ app.use("/", Canciones);
 
 
 
-app.listen(port, () => {
-    console.log(`Servidor a la escucha en el puerto ${port}.`);
+app.listen(process.env.PORT, () => {
+    console.log(`Servidor a la escucha en el puerto ${process.env.PORT}.`);
   });

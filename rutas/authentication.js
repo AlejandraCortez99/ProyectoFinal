@@ -156,4 +156,5 @@ authRoutes.put("/editarPerfil/:usuarioId", async (req, res) => {
     });
   res.redirect(`/homeUsuario`);
 });
+
 module.exports = authRoutes;
