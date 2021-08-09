@@ -1,7 +1,8 @@
+require('dotenv').config();
 const cors = require("cors");
 const express = require("express");
 const app = express();
-const port = 2550;
+
 const Authentication = require("./rutas/authentication");
 const Artistas = require("./rutas/artistas");
 const Albumes = require("./rutas/albumes");
